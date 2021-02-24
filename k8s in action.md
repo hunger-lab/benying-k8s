@@ -13,9 +13,7 @@
 
 * ![img](https://learning.oreilly.com/library/view/kubernetes-in-action/9781617293726/Images/02fig02_alt.jpg)
 
-*  
-
-  > The client and daemon don’t need to be on the same machine at all. If you’re using Docker on a non-Linux OS, the client is on your host OS, but the daemon runs inside a VM. Because all the files in the build directory are uploaded to the daemon, if it contains many large files and the daemon isn’t running locally, the upload may take longer.
+* > The client and daemon don’t need to be on the same machine at all. If you’re using Docker on a non-Linux OS, the client is on your host OS, but the daemon runs inside a VM. Because all the files in the build directory are uploaded to the daemon, if it contains many large files and the daemon isn’t running locally, the upload may take longer.
 
 * ```shell
   $ docker exec -it kubia-container bash
