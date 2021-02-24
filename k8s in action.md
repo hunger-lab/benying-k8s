@@ -7,9 +7,7 @@
 *  容器中进程写入位于底层的一个文件时，此文件的一个拷贝在顶层被创建，进程写的是此拷贝。
 * 一旦应用程序运行起来，Kubernetes就会不断地确认应用程序的部署状态始终与你提供的描述相匹配。
 
-
-
-### Chapter2. First steps with Docker and Kubernetes
+## Chapter2. First steps with Docker and Kubernetes
 
 * ![img](https://learning.oreilly.com/library/view/kubernetes-in-action/9781617293726/Images/02fig02_alt.jpg)
 
