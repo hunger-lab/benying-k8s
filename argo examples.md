@@ -1,6 +1,6 @@
 * CR can not be patched with strategic
 
-![image-20210225151248412](C:\Users\yangzhiquan5\Desktop\手写文档\benying-k8s\argo pic\image-20210225151248412.png)
+![image-20210225151248412](argo examples.assets/image-20210225151248412.png)
 
 * argo built-in support for git, http, gcs and s3 artifacts
 
@@ -197,6 +197,6 @@
 
 * retrying failed or errored steps
 
-  ![image-20210225163159170](C:\Users\yangzhiquan5\Desktop\手写文档\benying-k8s\argo pic\image-20210225163159170.png)
+  ![image-20210225163159170](argo examples.assets/image-20210225163159170.png)
 
 * 
