@@ -22,3 +22,9 @@
   >   -t, which allocates a pseudo terminal (TTY).    
   >
   > You need both if you want the use the shell like you’re used to. (If you leave out the first one, you can’t type any commands, and if you leave out the second one, the command prompt won’t be displayed and some commands will complain about the TERM variable not being set.)
+
+## Chapter 3. Pods: running containers in Kubernetes
+
+> Kubernetes sends a **SIGTERM** signal to the process and waits a certain number of seconds **(30 by default)** for it to shut down gracefully. If it doesn’t shut down in time, the process is then killed through **SIGKILL**. To make sure your processes are always shut down gracefully, they need to handle the **SIGTERM** signal properly.
+
+> Deleting everything with the all keyword doesn’t delete absolutely everything. Certain resources (like **Secrets**, which we’ll introduce in [chapter 7](https://learning.oreilly.com/library/view/kubernetes-in-action/9781617293726/Text/07.html#ch07)) are preserved and need to be deleted explicitly.
