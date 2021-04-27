@@ -132,3 +132,74 @@ try {
 
 #### 4.3 异步发送消息
 
+* 代码示例
+
+  ```java
+  private class DemoProducerCallback implements Callback { 
+      @Override
+      public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+          if (e != null) {
+              e.printStackTrace(); 
+          }
+      }
+  }
+  
+  ProducerRecord<String, String> record =
+      new ProducerRecord<>("CustomerCountry", "Biomedical Materials", "USA"); 
+  producer.send(record, new DemoProducerCallback()); 
+  ```
+
+  > To use callbacks, you need a class that implements the `org.apache.kafka.` `clients.producer.Callback` interface, which has a single function—`onCompletion()`.
+
+* callback是在producer的主线程里执行的，这样可以保证前后两个消息的callback的执行顺序一致。但是这也要求你的callback是非阻塞的操作。
+
+
+
+### 5 配置生产者
+
+#### 5.1 client.id
+
+#### 5.2 acks
+
+* acks=0，不等待ack，获取最大吞吐量。
+* acks=1，默认方式。leader分片接收到消息，就ack。
+* acks=all，所有的in-sync副本都接收到消息，才ack。
+* 看似以上三者是在可靠性和延迟之间做trade off。但是如果您考虑的是端到端的延迟，那么其实这三者是一样的。因为kafka只在所有的in-sync副本都接收到消息以后，才允许消费。
+
+#### 5.3 Message Delivery Time
+
+* 以下基于Kafka 2.1
+* 发送一条消息的时间被分为两个部分
+  * 异步调用send，到send函数返回的时间，该时间段send函数会阻塞
+  * send函数返回到callback被调用的时间。这段时间也是从消息被放在批里到kafka返回成功或者不可重试类错误或者超时。
+* 同步调用send时，send会持续阻塞，上面两段时间会合并。
+* ![newtimeout](https://learning.oreilly.com/library/view/kafka-the-definitive/9781492043072/assets/newtimeout.png)
+
+#### 5.4 MAX.BLOCK.MS
+
+* 调用send函数和partitionsFor函数的超时时间。防止缓冲区满了和元数据不可用。
+
+#### 5.5 DELIVERY.TIMEOUT.MS
+
+* 这个配置限制了消息被放到批里，到broker返回或者我们放弃 之间的时间，包括重试的时间。这个时间必须比 linger.ms加request.timeout时间更长。如果配置生产者时，时间配置不一致，会报异常。
+* **一般当broker宕机时，选主需要30s时间完成。所以为了安全起见，我们会把deliver.timeout.ms 参数设置为120s。**
+
+#### 5.6 REQUEST.TIMEOUT.MS
+
+> Note that this is the time spent waiting on each produce request before giving up - it does not include retries, time spent before sending, etc.
+
+* 某一次 produce request往返的时间，不包括重试的时间和发送数据之前的准备时间。
+
+#### 5.7 RETRIES AND RETRY.BACKOFF.MS
+
+#### 5.8 linger.ms
+
+* 控制建批的时间
+* 默认情况下是一个发送线程准备好的时候，就会发送，就算该批次只有一条消息。linger.ms参数会增加延迟，但是会增大吞吐量，减少每条消息的成本。如果能压缩消息当然更好。
+
+#### 5.9 BUFFER.MEMORY
+
+* 如果buffer满了，send会等待max.block.ms时长，然后抛出异常。异常由send抛出，不是由future抛出。
+
+
+
